@@ -1,7 +1,5 @@
 package agh.ics.oop;
 
-import java.sql.Array;
-
 import static java.lang.System.out;
 
 public class World {
