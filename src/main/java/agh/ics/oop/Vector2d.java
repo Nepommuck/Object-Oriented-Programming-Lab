@@ -25,6 +25,19 @@ public class Vector2d {
         return this.x >= other.x && this.y >= other.y;
     }
 
+    public Vector2d add(Vector2d other) {
+        return new Vector2d(
+                this.x + other.x,
+                this.y + other.y
+        );
+    }
+
+    public Vector2d subtract(Vector2d other) {
+        return new Vector2d(
+                this.x - other.x,
+                this.y - other.y
+        );
+    }
     public Vector2d upperRight(Vector2d other) {
         return new Vector2d(
                 max(this.x, other.x),
@@ -39,18 +52,8 @@ public class Vector2d {
         );
     }
 
-    public Vector2d add(Vector2d other) {
-        return new Vector2d(
-                this.x + other.x,
-                this.y + other.y
-        );
-    }
-
-    public Vector2d substract(Vector2d other) {
-        return new Vector2d(
-                this.x - other.x,
-                this.y - other.y
-        );
+    public Vector2d opposite() {
+        return new Vector2d( -this.x, -this.y );
     }
 
     public boolean equals(Object other) {
@@ -60,16 +63,11 @@ public class Vector2d {
         return this.x == oth.x && this.y == oth.y;
     }
 
-    public static void main(String[] arg) {
-        Vector2d v1 = new Vector2d(2, 5);
-        Vector2d v2 = new Vector2d(1, 10);
-        out.println(v1.upperRight(v2).toString());
-        out.println(v1.lowerLeft(v2).toString());
-
-        out.println(v1.getClass());
-
-        out.println(v1.equals(v2));
-        Vector2d v3 = new Vector2d(1, 10);
-        out.println(v2.equals(v3));
-    }
+//    public static void main(String[] arg) {
+//        Vector2d position1 = new Vector2d(1,2);
+//        System.out.println(position1);
+//        Vector2d position2 = new Vector2d(-2,1);
+//        System.out.println(position2);
+//        System.out.println(position1.add(position2));
+//    }
 }
