@@ -53,6 +53,21 @@ public class Vector2dTest {
         assertEquals(v2.lowerLeft(v3), v2);
         assertEquals(v1.lowerLeft(v5), v1);
     }
+
+    @Test public void hashCodeTest() {
+        assertEquals(
+                new Vector2d(1, 3).hashCode(),
+                new Vector2d(1, 3).hashCode()
+        );
+        assertEquals(
+                new Vector2d(5, 12).hashCode(),
+                new Vector2d(5, 12).hashCode()
+        );
+        assertEquals(
+                new Vector2d(0, -8).hashCode(),
+                new Vector2d(0, -8).hashCode()
+        );
+    }
     Vector2d a = new Vector2d(1, 0);
     Vector2d b = new Vector2d(-2, 8);
     Vector2d c = new Vector2d(14, -7);

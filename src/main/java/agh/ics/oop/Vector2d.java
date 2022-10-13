@@ -65,4 +65,9 @@ public class Vector2d {
         Vector2d oth = (Vector2d) other;
         return this.x == oth.x && this.y == oth.y;
     }
+
+    @Override
+    public int hashCode() {
+        return 11 + 31*x + 23*y;
+    }
 }

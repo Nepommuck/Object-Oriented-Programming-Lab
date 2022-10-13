@@ -1,15 +1,14 @@
 package agh.ics.oop;
 
-import java.util.Objects;
+import java.util.Scanner;
 
-import static java.lang.System.out;
 
 public class Animal {
     private MapDirection direction;
     private Vector2d position;
 
-    private Vector2d minPosition;
-    private Vector2d maxPosition;
+    private static Vector2d minPosition;
+    private static Vector2d maxPosition;
 
     public Animal() {
         direction = MapDirection.NORTH;
@@ -28,6 +27,10 @@ public class Animal {
         return this.position.equals(position);
     }
 
+    public boolean isFacing(MapDirection goal) {
+        return this.direction.equals(goal);
+    }
+
     public void move(MoveDirection direction) {
         Vector2d newPosition = position.copy();
 
@@ -41,5 +44,52 @@ public class Animal {
             position = newPosition;
     }
 
+    public static void controlAnimal() {
 
+        int k=1, mx = 50;
+        Animal animal1 = new Animal();
+        String[] userInput;
+        Scanner myObj = new Scanner(System.in);
+        boolean ok;
+
+        System.out.println("Rozpoczęto testowanie dzialania klasy Animal");
+        System.out.println("--------------------------------------------\n");
+
+        while (true) {
+            System.out.println(animal1);
+            System.out.println("");
+            System.out.print("Ile komend: ");
+            ok = true;
+
+            try {
+                k = Integer.parseInt(
+                        myObj.nextLine()
+                );
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Podana wartosc nie jest liczba calkowita.");
+                ok = false;
+            }
+            if (k <= 0)
+                break;
+
+            if (ok) {
+                System.out.println(k);
+                if (k > mx) {
+                    System.out.println("BLAD! Maksymalnie "+mx+" komend.");
+                }
+                else {
+                    userInput = new String[k];
+                    for (int i=0; i<k; i++) {
+                        System.out.print("["+(i+1)+"/"+k+"]:  ");
+                        userInput[i] = myObj.nextLine();
+                    }
+                    for (MoveDirection com : OptionsParser.parse(userInput))
+                        animal1.move(com);
+                }
+            }
+        }
+        System.out.println("--------------------------------------------\n");
+        System.out.println("Zakonczono testowanie dzialania klasy Animal");
+    }
 }

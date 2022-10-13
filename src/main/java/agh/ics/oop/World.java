@@ -3,47 +3,6 @@ package agh.ics.oop;
 import static java.lang.System.out;
 
 public class World {
-    public static void main(String[] args) {
-//        out.println("system wystartował");
-//
-//        String[] cars = {"Volvo", "BMW", "Ford", "Mazda"};
-//        String[] commands = {"f", "f", "r", "l", "a", "b"};
-//
-////        old_run(cars);
-//        run( convert(commands) );
-//        out.println("system zakończył działanie");
-
-
-//        Vector2d position1 = new Vector2d(1,2);
-//        System.out.println(position1);
-//        Vector2d position2 = new Vector2d(-2,1);
-//        System.out.println(position2);
-//        System.out.println(position1.add(position2));
-//
-//        out.println(MapDirection.WEST == MapDirection.NORTH.next());
-//        MapDirection[] dirs = {MapDirection.NORTH};
-//
-//        out.println(position1.equals(null));
-
-        Animal a = new Animal();
-        out.println(a);
-        out.println(a.isAt(
-                new Vector2d(3, 2)
-        ));
-
-        a.move(MoveDirection.RIGHT);
-        a.move(MoveDirection.FORWARD);
-        a.move(MoveDirection.FORWARD);
-        a.move(MoveDirection.FORWARD);
-        out.println(a);
-        
-//        String[] s = {"ak abba a po pl";
-//        for (char c:s
-//             ) {
-//            out.println(let);
-//        }
-    }
-
     public static void old_run(String[] names) {
         out.println("zwierzak idzie do przodu");
         boolean first = true;
