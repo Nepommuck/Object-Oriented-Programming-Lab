@@ -14,14 +14,34 @@ public class World {
 //        out.println("system zakończył działanie");
 
 
-        Vector2d position1 = new Vector2d(1,2);
-        System.out.println(position1);
-        Vector2d position2 = new Vector2d(-2,1);
-        System.out.println(position2);
-        System.out.println(position1.add(position2));
+//        Vector2d position1 = new Vector2d(1,2);
+//        System.out.println(position1);
+//        Vector2d position2 = new Vector2d(-2,1);
+//        System.out.println(position2);
+//        System.out.println(position1.add(position2));
+//
+//        out.println(MapDirection.WEST == MapDirection.NORTH.next());
+//        MapDirection[] dirs = {MapDirection.NORTH};
+//
+//        out.println(position1.equals(null));
 
-        out.println(MapDirection.WEST == MapDirection.NORTH.next());
-        MapDirection[] dirs = {MapDirection.NORTH};
+        Animal a = new Animal();
+        out.println(a);
+        out.println(a.isAt(
+                new Vector2d(3, 2)
+        ));
+
+        a.move(MoveDirection.RIGHT);
+        a.move(MoveDirection.FORWARD);
+        a.move(MoveDirection.FORWARD);
+        a.move(MoveDirection.FORWARD);
+        out.println(a);
+        
+//        String[] s = {"ak abba a po pl";
+//        for (char c:s
+//             ) {
+//            out.println(let);
+//        }
     }
 
     public static void old_run(String[] names) {
@@ -38,8 +58,8 @@ public class World {
         out.print("\n");
     }
 
-    public static void run(Direction[] comm) {
-        for(Direction command: comm) {
+    public static void run(MoveDirection[] comm) {
+        for(MoveDirection command: comm) {
             String message = switch (command) {
                 case FORWARD -> "Do przodu";
                 case BACKWARD -> "Do tyłu";
@@ -51,22 +71,22 @@ public class World {
         }
     }
 
-    public static Direction[] convert(String[] args) {
-        Direction[] ans = new Direction[args.length];
+    public static MoveDirection[] convert(String[] args) {
+        MoveDirection[] ans = new MoveDirection[args.length];
 
         int i = 0;
         for (String arg : args) {
             switch (arg) {
-                case "f" -> ans[i] = Direction.FORWARD;
-                case "b" -> ans[i] = Direction.BACKWARD;
-                case "l" -> ans[i] = Direction.LEFT;
-                case "r" -> ans[i] = Direction.RIGHT;
+                case "f" -> ans[i] = MoveDirection.FORWARD;
+                case "b" -> ans[i] = MoveDirection.BACKWARD;
+                case "l" -> ans[i] = MoveDirection.LEFT;
+                case "r" -> ans[i] = MoveDirection.RIGHT;
                 default -> i--;
             }
             i++;
         }
 
-        Direction[] final_ans = new Direction[i];
+        MoveDirection[] final_ans = new MoveDirection[i];
         System.arraycopy(ans, 0, final_ans, 0, i);
 
         return final_ans;

@@ -1,6 +1,5 @@
-package agh.ics.oop;
-
-import org.testng.annotations.Test;
+import agh.ics.oop.Vector2d;
+import org.junit.jupiter.api.Test;
 
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.AssertJUnit.*;
@@ -20,6 +19,7 @@ public class Vector2dTest {
         assertNotEquals(v1, v2);
         assertNotEquals(v1, v3);
         assertNotEquals(v2, v3);
+        assertNotEquals(v2, null);
     }
     @Test public void toStringTest() {
         assertEquals(v1.toString(), "(1, 0)");
@@ -46,6 +46,7 @@ public class Vector2dTest {
         assertEquals(v1.upperRight(v2), v3);
         assertEquals(v2.upperRight(v3), v3);
         assertEquals(v4.upperRight(v5), v5);
+        assertEquals(v5.upperRight(v4), v5);
     }
     @Test public void lowerLeftTest() {
         assertEquals(v1.lowerLeft(v4), v1);

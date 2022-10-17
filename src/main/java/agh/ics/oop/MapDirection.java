@@ -1,8 +1,6 @@
 package agh.ics.oop;
 
-import static java.lang.System.out;
-
-enum MapDirection {
+public enum MapDirection {
     SOUTH,
     WEST,
     NORTH,
@@ -38,16 +36,5 @@ enum MapDirection {
             case EAST -> x += 1;
         }
         return new Vector2d(x, y);
-    }
-
-    public static void main(String[] args) {
-        MapDirection a = NORTH;
-        MapDirection b;
-        for (int i=0; i<10; i++) {
-            out.println(a);
-            out.println(a.toUnitVector());
-            a = a.previous();
-        }
-        out.println((-4) % 4);
     }
 }
