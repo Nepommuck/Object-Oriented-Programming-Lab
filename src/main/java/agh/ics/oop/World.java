@@ -104,21 +104,18 @@ public class World {
     }
 
     public static void main(String[] args) {
-//        Animal animal1 = new Animal();
-//        controlAnimal(animal1);
 
-        List<List<Integer>> arr = new ArrayList<List<Integer>>();
-        arr.add(new ArrayList<>());
-        arr.add(new ArrayList<>());
-        arr.get(0).add(5);
-        arr.get(0).add(4);
-        out.println(arr.get(0).get(0));
-        out.println(arr);
-        for (List<Integer> row:arr) {
-            out.println(row);
-        }
+        args = new String[]{"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"};
+//        args = new String[]{};
 
-        RectangularMap m1 = new RectangularMap(4, 2);
-        m1.show();
+        MoveDirection[] directions = OptionsParser.parse(args);
+        RectangularMap map = new RectangularMap(10, 5);
+        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
+        IEngine engine = new SimulationEngine(directions, map, positions);
+
+        map.show();
+        engine.run();
+
+        map.show();
     }
 }
