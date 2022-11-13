@@ -11,7 +11,7 @@ public class Animal {
     private final static  Vector2d minPosition = new Vector2d(0, 0);
     private final static Vector2d maxPosition = new Vector2d(4, 4);
 
-    private IWorldMap map;
+    private final IWorldMap map;
 
     public Animal() {
         map = new RectangularMap(5, 5);

@@ -7,10 +7,12 @@ import static java.lang.System.out;
 
 public class RectangularMap implements IWorldMap{
 
+    final Vector2d minPosition;
     final Vector2d maxPosition;
     List<List<Animal>> map;
 
     public RectangularMap(int width, int height) {
+        minPosition = new Vector2d(0, 0);
         maxPosition = new Vector2d(width - 1, height - 1);
         map = new ArrayList<>();
 
@@ -38,7 +40,7 @@ public class RectangularMap implements IWorldMap{
     @Override
     public boolean canMoveTo(Vector2d position) {
 
-        if(position.follows(new Vector2d(0, 0)) && position.precedes(maxPosition))
+        if(position.follows(minPosition) && position.precedes(maxPosition))
             return !isOccupied(position);
         return false;
     }
@@ -73,3 +75,4 @@ public class RectangularMap implements IWorldMap{
         return map.get(position.y).get(position.x);
     }
 }
+
