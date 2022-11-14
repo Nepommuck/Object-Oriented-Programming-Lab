@@ -5,36 +5,30 @@ import java.util.List;
 
 import static java.lang.System.out;
 
-public class RectangularMap implements IWorldMap{
-
-    final Vector2d minPosition;
-    final Vector2d maxPosition;
-    List<List<Animal>> map;
+public class RectangularMap extends AbstractWorldMap {
 
     public RectangularMap(int width, int height) {
-        minPosition = new Vector2d(0, 0);
         maxPosition = new Vector2d(width - 1, height - 1);
-        map = new ArrayList<>();
 
-        for (int y=0; y<height; y++) {
-            map.add(new ArrayList<>());
-            for (int x=0; x<width; x++)
-                map.get(y).add(null);
-        }
+        animals = new ArrayList<>();
     }
 
-    public void show() {
-        for(int i=map.size()-1; i>=0; i--) {
-            for(Animal animal:map.get(i)) {
-                if(animal == null)
-                    out.print(' ');
+    @Override
+    public String toString() {
+        StringBuilder rez = new StringBuilder();
+
+        for(int y = maxPosition.y; y>=0; y--) {
+
+            for (int x=0; x <= maxPosition.x; x++) {
+                Animal animal = (Animal) objectAt(new Vector2d(x, y));
+                if (animal == null)
+                    rez.append(".");
                 else
-                    out.print(animal);
-                out.print(',');
+                    rez.append(animal.toString());
             }
-            out.println("");
+            rez.append("\n");
         }
-        out.println("");
+        return String.valueOf(rez);
     }
 
     @Override
@@ -45,34 +39,22 @@ public class RectangularMap implements IWorldMap{
         return false;
     }
 
+
     @Override
     public boolean place(Animal animal) {
-        if (!canMoveTo(animal.getPosition()))
+        if(isOccupied(
+                animal.getPosition()
+        ))
             return false;
 
-        if (animal.getActualPosition() != null) {
-            int x = animal.getActualPosition().x;
-            int y = animal.getActualPosition().y;
-            map.get(y).set(x, null);
-        }
-        
-        animal.updatePosition();
-
-        int x = animal.getPosition().x;
-        int y = animal.getPosition().y;
-        map.get(y).set(x, animal);
+        animals.add(animal);
         return true;
     }
 
-
     @Override
     public boolean isOccupied(Vector2d position) {
-        return map.get(position.y).get(position.x) != null;
+        return objectAt(position) != null;
     }
 
-    @Override
-    public Object objectAt(Vector2d position) {
-        return map.get(position.y).get(position.x);
-    }
 }
 

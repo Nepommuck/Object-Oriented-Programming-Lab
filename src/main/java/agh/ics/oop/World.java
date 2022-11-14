@@ -110,12 +110,15 @@ public class World {
 
         MoveDirection[] directions = OptionsParser.parse(args);
         RectangularMap map = new RectangularMap(10, 5);
-        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
-        IEngine engine = new SimulationEngine(directions, map, positions);
+        GrassField grassMap = new GrassField(10);
+        out.println(grassMap);
 
-        map.show();
+        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
+        IEngine engine = new SimulationEngine(directions, grassMap, positions);
+
+        out.println(grassMap);
         engine.run();
 
-        map.show();
+        out.println(grassMap);
     }
 }
