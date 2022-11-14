@@ -14,24 +14,6 @@ public class RectangularMap extends AbstractWorldMap {
     }
 
     @Override
-    public String toString() {
-        StringBuilder rez = new StringBuilder();
-
-        for(int y = maxPosition.y; y>=0; y--) {
-
-            for (int x=0; x <= maxPosition.x; x++) {
-                Animal animal = (Animal) objectAt(new Vector2d(x, y));
-                if (animal == null)
-                    rez.append(".");
-                else
-                    rez.append(animal.toString());
-            }
-            rez.append("\n");
-        }
-        return String.valueOf(rez);
-    }
-
-    @Override
     public boolean canMoveTo(Vector2d position) {
 
         if(position.follows(minPosition) && position.precedes(maxPosition))
@@ -40,21 +22,6 @@ public class RectangularMap extends AbstractWorldMap {
     }
 
 
-    @Override
-    public boolean place(Animal animal) {
-        if(isOccupied(
-                animal.getPosition()
-        ))
-            return false;
-
-        animals.add(animal);
-        return true;
-    }
-
-    @Override
-    public boolean isOccupied(Vector2d position) {
-        return objectAt(position) != null;
-    }
 
 }
 

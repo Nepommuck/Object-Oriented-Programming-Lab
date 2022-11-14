@@ -14,8 +14,10 @@ public abstract class AbstractWorldMap implements IWorldMap {
         return maxPosition;
     }
 
-    abstract public boolean isOccupied(Vector2d position);
 
+    public boolean isOccupied(Vector2d position) {
+        return objectAt(position) != null;
+    }
     public boolean canMoveTo(Vector2d position) {
 
         if(position.follows(minPosition))
@@ -29,6 +31,16 @@ public abstract class AbstractWorldMap implements IWorldMap {
                 return animal;
         }
         return null;
+    }
+
+    public boolean place(Animal animal) {
+        if(!canMoveTo(
+                animal.getPosition()
+        ))
+            return false;
+
+        animals.add(animal);
+        return true;
     }
 
     public String toString() {
