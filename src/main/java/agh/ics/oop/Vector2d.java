@@ -1,5 +1,7 @@
 package agh.ics.oop;
 
+import java.util.Objects;
+
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -68,6 +70,6 @@ public class Vector2d {
 
     @Override
     public int hashCode() {
-        return 11 + 31*x + 23*y;
+        return Objects.hash(this.x, this.y);
     }
 }

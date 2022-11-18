@@ -1,23 +1,25 @@
 package agh.ics.oop;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public abstract class AbstractWorldMap implements IWorldMap {
-
+public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     final protected Vector2d minPosition = new Vector2d(0, 0);
     protected Vector2d maxPosition;
 
-    protected List<Animal> animals;
+//    protected List<Animal> animals;
+    Map<Vector2d, Animal> animals = new HashMap<>();
 
     protected Vector2d getMaxPosition() {
         return maxPosition;
     }
 
-
     public boolean isOccupied(Vector2d position) {
         return objectAt(position) != null;
     }
+
     public boolean canMoveTo(Vector2d position) {
 
         if(position.follows(minPosition))
@@ -26,20 +28,14 @@ public abstract class AbstractWorldMap implements IWorldMap {
     }
 
     public Object objectAt(Vector2d position) {
-        for(Animal animal : animals) {
-            if (animal.isAt(position))
-                return animal;
-        }
-        return null;
+        return animals.get(position);
     }
 
     public boolean place(Animal animal) {
-        if(!canMoveTo(
-                animal.getPosition()
-        ))
+        if(!canMoveTo(animal.getPosition()))
             return false;
 
-        animals.add(animal);
+        animals.put(animal.getPosition(), animal);
         return true;
     }
 
@@ -53,7 +49,7 @@ public abstract class AbstractWorldMap implements IWorldMap {
             for (int x=0; x <= maxPosition.x; x++) {
                 Object obj = objectAt(new Vector2d(x, y));
                 if(obj == null)
-                    rez.append(" ");
+                    rez.append(".");
                 else
                     rez.append(obj);
 
@@ -62,5 +58,17 @@ public abstract class AbstractWorldMap implements IWorldMap {
             rez.append("\n");
         }
         return String.valueOf(rez);
+    }
+
+    public boolean positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        if (!animals.containsKey(oldPosition))
+            return false;
+        if (newPosition.equals(oldPosition))
+            return true;
+        if (animals.containsKey(newPosition))
+            return false;
+        Animal animal = animals.remove(oldPosition);
+        animals.put(newPosition, animal);
+        return true;
     }
 }

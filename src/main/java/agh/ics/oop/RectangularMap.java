@@ -9,8 +9,6 @@ public class RectangularMap extends AbstractWorldMap {
 
     public RectangularMap(int width, int height) {
         maxPosition = new Vector2d(width - 1, height - 1);
-
-        animals = new ArrayList<>();
     }
 
     @Override
@@ -20,8 +18,5 @@ public class RectangularMap extends AbstractWorldMap {
             return !isOccupied(position);
         return false;
     }
-
-
-
 }
 
