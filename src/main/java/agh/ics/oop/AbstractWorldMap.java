@@ -9,7 +9,6 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     final protected Vector2d minPosition = new Vector2d(0, 0);
     protected Vector2d maxPosition;
 
-//    protected List<Animal> animals;
     Map<Vector2d, Animal> animals = new HashMap<>();
 
     protected Vector2d getMaxPosition() {

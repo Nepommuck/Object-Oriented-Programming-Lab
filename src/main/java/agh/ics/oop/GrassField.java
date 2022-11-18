@@ -17,6 +17,11 @@ public class GrassField extends AbstractWorldMap{
 
     @Override
     protected Vector2d getMaxPosition() {
+        maxPosition = new Vector2d(0, 0);
+
+        for(Vector2d position : grassLocation.keySet()) {
+            maxPosition = maxPosition.upperRight(position);
+        }
         for(Vector2d position : animals.keySet()) {
             maxPosition = maxPosition.upperRight(position);
         }
@@ -25,22 +30,25 @@ public class GrassField extends AbstractWorldMap{
 
     public GrassField(int numberOfGrass) {
         this.numberOfGrass = numberOfGrass;
-        int mx_ind = (int) Math.sqrt(10 * numberOfGrass);
-
         maxPosition = new Vector2d(0, 0);
 
 //        Losowanie trawy
-        while (numberOfGrass > 0) {
+        for (int i=0; i<numberOfGrass; i++)
+            placeGrass();
+    }
+
+    private void placeGrass() {
+        int mx_ind = (int) Math.sqrt(10 * numberOfGrass);
+        while (true) {
             int x = ThreadLocalRandom.current().nextInt(0, mx_ind + 1);
             int y = ThreadLocalRandom.current().nextInt(0, mx_ind + 1);
 
             if(!isOccupied(new Vector2d(x, y))) {
-                numberOfGrass--;
                 Vector2d grassPosition = new Vector2d(x, y);
-//                grassLocation.add(new Grass(grassPosition));
                 grassLocation.put(grassPosition, new Grass(grassPosition));
 
                 maxPosition = maxPosition.upperRight(grassPosition);
+                return;
             }
         }
     }
@@ -51,5 +59,42 @@ public class GrassField extends AbstractWorldMap{
         if(object != null)
             return object;
         return grassLocation.get(position);
+    }
+
+    @Override
+    public boolean canMoveTo(Vector2d position) {
+        if(position.follows(minPosition))
+            return !isOccupied(position) || objectAt(position) instanceof Grass;
+        return false;
+    }
+
+    // Movement of grass
+    @Override
+    public boolean place(Animal animal) {
+
+        if(super.place(animal)) {
+            if (grassLocation.containsKey(animal.getPosition())) {
+
+                grassLocation.remove(animal.getPosition());
+                placeGrass();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    // Movement of grass
+    @Override
+    public boolean positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+
+        if(super.positionChanged(oldPosition, newPosition)) {
+            if (grassLocation.containsKey(newPosition)) {
+
+                grassLocation.remove(newPosition);
+                placeGrass();
+            }
+            return true;
+        }
+        return false;
     }
 }
