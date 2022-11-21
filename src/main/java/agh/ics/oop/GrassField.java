@@ -14,7 +14,7 @@ public class GrassField extends AbstractWorldMap{
 
     @Override
     protected Vector2d getMaxPosition() {
-        for(Animal animal : animals) {
+        for(Animal animal : animals) {  // a trawa się nie liczy?
             maxPosition = maxPosition.upperRight(animal.getPosition());
         }
         return maxPosition;
