@@ -32,7 +32,10 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
 
     public boolean place(Animal animal) {
         if(!canMoveTo(animal.getPosition()))
-            return false;
+            throw new IllegalArgumentException(
+                    "Object cannot be placed, because field " + animal.getPosition()
+                            + " does not exist or is occupied"
+            );
 
         animals.put(animal.getPosition(), animal);
         return true;
@@ -59,6 +62,7 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
         return String.valueOf(rez);
     }
 
+    // Wyjątek
     public boolean positionChanged(Vector2d oldPosition, Vector2d newPosition) {
         if (!animals.containsKey(oldPosition))
             return false;

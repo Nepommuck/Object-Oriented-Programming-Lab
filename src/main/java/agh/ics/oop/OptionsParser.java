@@ -16,8 +16,9 @@ public class OptionsParser {
                 case "right", "r" -> RIGHT;
                 default -> null;
             };
-            if (akt != null)
-                commList.add(akt);
+            if (akt == null)
+                throw new IllegalArgumentException(arg + " is not legal move specification");
+            commList.add(akt);
         }
         return commList.toArray(new MoveDirection[0]);
     }

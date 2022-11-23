@@ -80,7 +80,11 @@ public class GrassField extends AbstractWorldMap{
             }
             return true;
         }
-        return false;
+        throw new IllegalArgumentException(
+                "Object cannot be placed, because field " + animal.getPosition()
+                        + " does not exist or is occupied"
+        );
+//        return false;
     }
 
     // Movement of grass
