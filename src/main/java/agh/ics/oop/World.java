@@ -1,5 +1,8 @@
 package agh.ics.oop;
 
+import agh.ics.oop.gui.App;
+import javafx.application.Application;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -8,53 +11,6 @@ import static java.lang.System.exit;
 import static java.lang.System.out;
 
 public class World {
-    public static void old_run(String[] names) {
-        out.println("zwierzak idzie do przodu");
-        boolean first = true;
-
-        for(String name: names){
-            if (!first)
-                out.print(", ");
-            out.print(name);
-
-            first = false;
-        }
-        out.print("\n");
-    }
-
-    public static void run(MoveDirection[] comm) {
-        for(MoveDirection command: comm) {
-            String message = switch (command) {
-                case FORWARD -> "Do przodu";
-                case BACKWARD -> "Do tyłu";
-                case LEFT -> "W lewo";
-                case RIGHT -> "W prawo";
-            };
-
-            out.println(message);
-        }
-    }
-
-    public static MoveDirection[] convert(String[] args) {
-        MoveDirection[] ans = new MoveDirection[args.length];
-
-        int i = 0;
-        for (String arg : args) {
-            switch (arg) {
-                case "f" -> ans[i] = MoveDirection.FORWARD;
-                case "b" -> ans[i] = MoveDirection.BACKWARD;
-                case "l" -> ans[i] = MoveDirection.LEFT;
-                case "r" -> ans[i] = MoveDirection.RIGHT;
-                default -> i--;
-            }
-            i++;
-        }
-
-        MoveDirection[] final_ans = new MoveDirection[i];
-        System.arraycopy(ans, 0, final_ans, 0, i);
-
-        return final_ans;
-    }
 
     public static void controlAnimal(Animal animal) {
 
@@ -108,7 +64,11 @@ public class World {
 
         try {
             args = new String[]{"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"};
+//            args = new String[]{"f", "r", "f", "f"};
 //            args = new String[]{};
+
+            App app = new App();
+            app.init();
 
             MoveDirection[] directions = OptionsParser.parse(args);
             RectangularMap map = new RectangularMap(10, 5);
@@ -124,11 +84,32 @@ public class World {
             out.println(grassMap);
         }
         catch (IllegalArgumentException e) {
-            out.println("Encoured fatal error:");
+            out.println("Encountered  fatal error:");
             out.println(e);
             out.println("The process will be terminated.");
             exit(-1);
         }
+        catch (java.lang.Exception e) {
+            out.println("Something wrong with gui:");
+            out.println(e);
+            exit(-1);
+        }
 
+//        GrassField grassMap = new GrassField(15);
+//
+//        out.println(
+//                grassMap
+//        );
+//
+//        Animal animal1 = new Animal(grassMap, new Vector2d(2, 2));
+//        grassMap.place(animal1);
+//        out.println(grassMap.animals);
+//
+//        animal1.addObserver(grassMap);
+//
+//        out.println(grassMap);
+//        animal1.move(MoveDirection.FORWARD);
+//        out.println(grassMap.animals);
+//        out.println(grassMap);
     }
 }

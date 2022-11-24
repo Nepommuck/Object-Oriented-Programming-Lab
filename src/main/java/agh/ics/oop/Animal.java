@@ -62,8 +62,9 @@ public class Animal implements IMapElement {
         }
 
         if (newPosition != position && map.canMoveTo(newPosition)) {
-            positionChanged(position, newPosition);
+            Vector2d oldPosition = position;
             position = newPosition;
+            positionChanged(oldPosition);
         }
     }
 
@@ -75,9 +76,10 @@ public class Animal implements IMapElement {
         observers.remove(observer);
     }
 
-    private void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+    private void positionChanged(Vector2d oldPosition) {
+
         for (IPositionChangeObserver observer : observers) {
-            observer.positionChanged(oldPosition, newPosition);
+            observer.positionChanged(oldPosition, this);
         }
     }
 }

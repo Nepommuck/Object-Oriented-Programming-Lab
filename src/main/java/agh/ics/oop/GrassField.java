@@ -12,29 +12,21 @@ import static java.lang.Math.max;
 public class GrassField extends AbstractWorldMap{
 
     private final int numberOfGrass;
-//    private List<Grass> grassLocation;
     Map<Vector2d, Grass> grassLocation = new HashMap<>();
+    MapBoundary mapBoundary = new MapBoundary();
 
-    @Override
-    protected Vector2d getMaxPosition() {
-        maxPosition = new Vector2d(0, 0);
-
-        for(Vector2d position : grassLocation.keySet()) {
-            maxPosition = maxPosition.upperRight(position);
-        }
-        for(Vector2d position : animals.keySet()) {
-            maxPosition = maxPosition.upperRight(position);
-        }
-        return maxPosition;
-    }
 
     public GrassField(int numberOfGrass) {
         this.numberOfGrass = numberOfGrass;
-        maxPosition = new Vector2d(0, 0);
 
 //        Losowanie trawy
         for (int i=0; i<numberOfGrass; i++)
             placeGrass();
+    }
+
+    @Override
+    protected Vector2d getUpperRight() {
+        return mapBoundary.getUpperRight();
     }
 
     private void placeGrass() {
@@ -45,9 +37,10 @@ public class GrassField extends AbstractWorldMap{
 
             if(!isOccupied(new Vector2d(x, y))) {
                 Vector2d grassPosition = new Vector2d(x, y);
-                grassLocation.put(grassPosition, new Grass(grassPosition));
+                Grass newGrass = new Grass(grassPosition);
+                grassLocation.put(grassPosition, newGrass);
+                mapBoundary.add(grassPosition, newGrass);
 
-                maxPosition = maxPosition.upperRight(grassPosition);
                 return;
             }
         }
@@ -63,7 +56,7 @@ public class GrassField extends AbstractWorldMap{
 
     @Override
     public boolean canMoveTo(Vector2d position) {
-        if(position.follows(minPosition))
+        if(position.follows(getLowerLeft()))
             return !isOccupied(position) || objectAt(position) instanceof Grass;
         return false;
     }
@@ -76,8 +69,10 @@ public class GrassField extends AbstractWorldMap{
             if (grassLocation.containsKey(animal.getPosition())) {
 
                 grassLocation.remove(animal.getPosition());
+                mapBoundary.remove(animal.getPosition(), null);
                 placeGrass();
             }
+            mapBoundary.add(animal.getPosition(), animal);
             return true;
         }
         throw new IllegalArgumentException(
@@ -87,16 +82,18 @@ public class GrassField extends AbstractWorldMap{
 //        return false;
     }
 
-    // Movement of grass
     @Override
-    public boolean positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+    public boolean positionChanged(Vector2d oldPosition, Animal animal) {
+        Vector2d newPosition = animal.getPosition();
 
-        if(super.positionChanged(oldPosition, newPosition)) {
+        if(super.positionChanged(oldPosition, animal)) {
             if (grassLocation.containsKey(newPosition)) {
 
                 grassLocation.remove(newPosition);
+                mapBoundary.remove(newPosition, null);
                 placeGrass();
             }
+            mapBoundary.positionChanged(oldPosition, animal);
             return true;
         }
         return false;

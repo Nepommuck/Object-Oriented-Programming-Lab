@@ -7,16 +7,14 @@ import static java.lang.System.out;
 
 public class RectangularMap extends AbstractWorldMap {
 
+    private final Vector2d maxPosition;
     public RectangularMap(int width, int height) {
         maxPosition = new Vector2d(width - 1, height - 1);
     }
 
     @Override
-    public boolean canMoveTo(Vector2d position) {
-
-        if(position.follows(minPosition) && position.precedes(maxPosition))
-            return !isOccupied(position);
-        return false;
+    protected Vector2d getUpperRight() {
+        return maxPosition;
     }
 }
 

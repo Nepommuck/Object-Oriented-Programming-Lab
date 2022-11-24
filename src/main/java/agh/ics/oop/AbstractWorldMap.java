@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
-    final protected Vector2d minPosition = new Vector2d(0, 0);
-    protected Vector2d maxPosition;
 
     Map<Vector2d, Animal> animals = new HashMap<>();
 
-    protected Vector2d getMaxPosition() {
-        return maxPosition;
+    protected Vector2d getLowerLeft() {
+        return new Vector2d(0, 0);
     }
+
+    protected abstract Vector2d getUpperRight();
 
     public boolean isOccupied(Vector2d position) {
         return objectAt(position) != null;
@@ -21,7 +21,7 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
 
     public boolean canMoveTo(Vector2d position) {
 
-        if(position.follows(minPosition))
+        if(position.follows(getLowerLeft()) && position.precedes(getUpperRight()))
             return !isOccupied(position);
         return false;
     }
@@ -41,36 +41,47 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
         return true;
     }
 
+//    public String toString() {
+//        StringBuilder rez = new StringBuilder();
+//        // May be outdated!
+//        maxPosition = getMaxPosition();
+//
+//        for(int y = maxPosition.y; y>=0; y--) {
+//
+//            for (int x=0; x <= maxPosition.x; x++) {
+//                Object obj = objectAt(new Vector2d(x, y));
+//                if(obj == null)
+//                    rez.append(".");
+//                else
+//                    rez.append(obj);
+//
+//                rez.append(" ");
+//            }
+//            rez.append("\n");
+//        }
+//        return String.valueOf(rez);
+//    }
+
+    @Override
     public String toString() {
-        StringBuilder rez = new StringBuilder();
-        // May be outdated!
-        maxPosition = getMaxPosition();
-
-        for(int y = maxPosition.y; y>=0; y--) {
-
-            for (int x=0; x <= maxPosition.x; x++) {
-                Object obj = objectAt(new Vector2d(x, y));
-                if(obj == null)
-                    rez.append(".");
-                else
-                    rez.append(obj);
-
-                rez.append(" ");
-            }
-            rez.append("\n");
-        }
-        return String.valueOf(rez);
+        MapVisualizer mv = new MapVisualizer(this);
+        return mv.draw(getLowerLeft(), getUpperRight());
     }
 
+
     // Wyjątek
-    public boolean positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+
+    public boolean positionChanged(Vector2d oldPosition, Animal animal) {
+        Vector2d newPosition = animal.getPosition();
+
         if (!animals.containsKey(oldPosition))
             return false;
         if (newPosition.equals(oldPosition))
             return true;
         if (animals.containsKey(newPosition))
             return false;
-        Animal animal = animals.remove(oldPosition);
+
+        animals.remove(oldPosition);
         animals.put(newPosition, animal);
         return true;
     }

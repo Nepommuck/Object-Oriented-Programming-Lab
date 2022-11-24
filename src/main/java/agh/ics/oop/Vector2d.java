@@ -73,5 +73,4 @@ public class Vector2d {
         return Objects.hash(this.x, this.y);
     }
 
-    compere
 }
