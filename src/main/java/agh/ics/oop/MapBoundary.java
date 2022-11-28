@@ -2,15 +2,12 @@ package agh.ics.oop;
 
 
 import java.util.Comparator;
-import java.util.Set;
 import java.util.TreeSet;
-
-import static java.lang.System.out;
 
 
 public class MapBoundary implements IPositionChangeObserver{
-    TreeSet<VectorKeyAndElement> setX = new TreeSet<>(new CompareVectorKeyAndElement(true));
-    TreeSet<VectorKeyAndElement> setY = new TreeSet<>(new CompareVectorKeyAndElement(false));
+    private TreeSet<VectorKeyAndElement> setX = new TreeSet<>(new CompareVectorKeyAndElement(true));
+    private TreeSet<VectorKeyAndElement> setY = new TreeSet<>(new CompareVectorKeyAndElement(false));
 
     @Override
     public boolean positionChanged(Vector2d oldPosition, Animal animal) {

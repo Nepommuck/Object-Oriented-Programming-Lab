@@ -1,19 +1,17 @@
 package agh.ics.oop;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
 
-    Map<Vector2d, Animal> animals = new HashMap<>();
+    private Map<Vector2d, Animal> animals = new HashMap<>();
 
-    protected Vector2d getLowerLeft() {
+    Vector2d getLowerLeft() {
         return new Vector2d(0, 0);
     }
 
-    protected abstract Vector2d getUpperRight();
+    abstract Vector2d getUpperRight();
 
     public boolean isOccupied(Vector2d position) {
         return objectAt(position) != null;
@@ -40,28 +38,6 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
         animals.put(animal.getPosition(), animal);
         return true;
     }
-
-//    public String toString() {
-//        StringBuilder rez = new StringBuilder();
-//        // May be outdated!
-//        maxPosition = getMaxPosition();
-//
-//        for(int y = maxPosition.y; y>=0; y--) {
-//
-//            for (int x=0; x <= maxPosition.x; x++) {
-//                Object obj = objectAt(new Vector2d(x, y));
-//                if(obj == null)
-//                    rez.append(".");
-//                else
-//                    rez.append(obj);
-//
-//                rez.append(" ");
-//            }
-//            rez.append("\n");
-//        }
-//        return String.valueOf(rez);
-//    }
-
     @Override
     public String toString() {
         MapVisualizer mv = new MapVisualizer(this);
@@ -70,7 +46,6 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
 
 
     // Wyjątek
-
     public boolean positionChanged(Vector2d oldPosition, Animal animal) {
         Vector2d newPosition = animal.getPosition();
 

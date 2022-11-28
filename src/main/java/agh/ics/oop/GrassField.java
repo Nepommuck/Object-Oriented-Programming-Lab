@@ -1,19 +1,15 @@
 package agh.ics.oop;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static java.lang.Math.max;
 
 
 public class GrassField extends AbstractWorldMap{
 
     private final int numberOfGrass;
-    Map<Vector2d, Grass> grassLocation = new HashMap<>();
-    MapBoundary mapBoundary = new MapBoundary();
+    private Map<Vector2d, Grass> grassLocation = new HashMap<>();
+    private MapBoundary mapBoundary = new MapBoundary();
 
 
     public GrassField(int numberOfGrass) {
@@ -25,7 +21,7 @@ public class GrassField extends AbstractWorldMap{
     }
 
     @Override
-    protected Vector2d getUpperRight() {
+    public Vector2d getUpperRight() {
         return mapBoundary.getUpperRight();
     }
 

@@ -13,7 +13,7 @@ public class RectangularMap extends AbstractWorldMap {
     }
 
     @Override
-    protected Vector2d getUpperRight() {
+    Vector2d getUpperRight() {
         return maxPosition;
     }
 }

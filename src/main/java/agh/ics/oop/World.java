@@ -3,8 +3,6 @@ package agh.ics.oop;
 import agh.ics.oop.gui.App;
 import javafx.application.Application;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import static java.lang.System.exit;
@@ -61,55 +59,23 @@ public class World {
     }
 
     public static void main(String[] args) {
+        args = new String[]{"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"};
 
         try {
-            args = new String[]{"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"};
-//            args = new String[]{"f", "r", "f", "f"};
-//            args = new String[]{};
-
-            App app = new App();
-            app.init();
-
-            MoveDirection[] directions = OptionsParser.parse(args);
-            RectangularMap map = new RectangularMap(10, 5);
-            GrassField grassMap = new GrassField(10);
-            out.println(grassMap);
-
-            Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
-            IEngine engine = new SimulationEngine(directions, grassMap, positions);
-
-            out.println(grassMap);
-            engine.run();
-
-            out.println(grassMap);
+            Application.launch(App.class, args);
         }
+
         catch (IllegalArgumentException e) {
             out.println("Encountered  fatal error:");
             out.println(e);
             out.println("The process will be terminated.");
             exit(-1);
         }
+
         catch (java.lang.Exception e) {
             out.println("Something wrong with gui:");
             out.println(e);
             exit(-1);
         }
-
-//        GrassField grassMap = new GrassField(15);
-//
-//        out.println(
-//                grassMap
-//        );
-//
-//        Animal animal1 = new Animal(grassMap, new Vector2d(2, 2));
-//        grassMap.place(animal1);
-//        out.println(grassMap.animals);
-//
-//        animal1.addObserver(grassMap);
-//
-//        out.println(grassMap);
-//        animal1.move(MoveDirection.FORWARD);
-//        out.println(grassMap.animals);
-//        out.println(grassMap);
     }
 }
