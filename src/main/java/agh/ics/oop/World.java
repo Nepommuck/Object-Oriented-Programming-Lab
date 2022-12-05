@@ -3,6 +3,7 @@ package agh.ics.oop;
 import agh.ics.oop.gui.App;
 import javafx.application.Application;
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import static java.lang.System.exit;

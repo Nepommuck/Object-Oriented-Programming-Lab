@@ -2,33 +2,44 @@ package agh.ics.oop.gui;
 
 import agh.ics.oop.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class App extends Application {
+import java.io.FileNotFoundException;
+import java.util.Observable;
+
+public class App extends Application implements IPositionChangeObserver {
+
+    private GridPane gridPane;
+    private final int width = 45;
+    private final int height = 45;
+    private GrassField map;
+    private Scene scene;
+    private Stage stage;
+
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
+        stage = primaryStage;
         primaryStage.setTitle("Lab 7");
 
         GrassField map = (GrassField) handleSimulation();
-//        System.out.println(map);
 
         Vector2d upperRight = map.getUpperRight();
-        final int width = 30;
-        final int height = 30;
 
-        GridPane gridPane = new GridPane();
+        gridPane = new GridPane();
         gridPane.setGridLinesVisible(true);
 
         drawNumberLine(gridPane, upperRight, width, height);
         drawElements(gridPane, map, upperRight);
 
-        Scene scene = new Scene(gridPane, width * (upperRight.x + 2), height * (upperRight.y + 2));
+        scene = new Scene(gridPane, width * (upperRight.x + 2), height * (upperRight.y + 2));
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -37,14 +48,17 @@ public class App extends Application {
         String[] arrArgs = getParameters().getRaw().toArray(new String[0]);
 
         MoveDirection[] directions = OptionsParser.parse(arrArgs);
-        GrassField map = new GrassField(10);
+        map = new GrassField(10);
 
-        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
-        IEngine engine = new SimulationEngine(directions, map, positions);
+        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,9) };
+//        SimulationEngine engine = new SimulationEngine(directions, map, positions);
+        SimulationEngine engine = new SimulationEngine(directions, map, positions, this);
+        Thread engineThread = new Thread(engine);
 
-//        System.out.println(map);
-        engine.run();
+        engineThread.start();
+//        engine.run();
 
+        System.out.println(map);
         return map;
     }
 
@@ -57,13 +71,27 @@ public class App extends Application {
         gridPane.add(label, colIndex, rowIndex);
     }
 
+    private void addGuiElementBox(GridPane gridPane, Vector2d gridPosition, GuiElementBox guiElem) {
+        int colIndex = gridPosition.x;
+        int rowIndex = gridPosition.y;
+
+        VBox vBox = guiElem.getvBox();
+        GridPane.setHalignment(vBox, HPos.CENTER);
+        gridPane.add(vBox, colIndex, rowIndex);
+    }
+
     private void drawElements(GridPane gridPane, AbstractWorldMap map, Vector2d upperRight) {
         for (int x=0; x <= upperRight.x; x++)
             for (int y=0; y <= upperRight.y; y++) {
 
                 IMapElement elem = (IMapElement) map.objectAt(new Vector2d(x, y));
-                if (elem != null)
-                    addLabel(gridPane, fromMapToGridPosition(new Vector2d(x, y), upperRight), elem.toString());
+                if (elem != null) {
+                    try {
+                        addGuiElementBox(gridPane, fromMapToGridPosition(new Vector2d(x, y), upperRight), new GuiElementBox(elem));
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
     }
 
@@ -92,5 +120,28 @@ public class App extends Application {
 
     private Vector2d fromMapToGridPosition(Vector2d mapPosition, Vector2d upperRight) {
         return new Vector2d(mapPosition.x+1, upperRight.y - mapPosition.y + 1);
+    }
+
+    @Override
+    public boolean positionChanged(Vector2d oldPosition, Animal animal) {
+        clear();
+
+        Vector2d upperRight = map.getUpperRight();
+        drawNumberLine(gridPane, upperRight, width, height);
+        drawElements(gridPane, map, upperRight);
+        gridPane.setGridLinesVisible(true);
+
+        stage.setHeight(height * (upperRight.y + 3));
+        stage.setWidth(width * (upperRight.x + 2.5));
+
+        return true;
+    }
+
+    private void clear() {
+        this.gridPane.setGridLinesVisible(false);
+        this.gridPane.getColumnConstraints().clear();
+        this.gridPane.getRowConstraints().clear();
+        this.gridPane.getChildren().clear();
+        this.gridPane.setGridLinesVisible(true);
     }
 }

@@ -4,4 +4,6 @@ public interface IMapElement {
 
     public Vector2d getPosition();
     public String toString();
+    public String mapDescription();
+    public String getResource();
 }

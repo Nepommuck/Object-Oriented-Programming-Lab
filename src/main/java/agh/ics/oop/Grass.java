@@ -15,4 +15,14 @@ public class Grass implements IMapElement {
     public String toString() {
         return "*";
     }
+
+    @Override
+    public String mapDescription() {
+        return "Grass";
+    }
+
+    @Override
+    public String getResource() {
+        return "src/main/resources/grass.png";
+    }
 }

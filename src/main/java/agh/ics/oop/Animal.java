@@ -1,10 +1,12 @@
 package agh.ics.oop;
 
+import javafx.application.Platform;
+
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Animal implements IMapElement {
-
     private MapDirection direction;
     private Vector2d position;
     private final IWorldMap map;
@@ -39,8 +41,9 @@ public class Animal implements IMapElement {
         };
     }
 
-    public String oldToString() {
-        return "Zwierzę na pozycji "+position.toString()+" w kierunku "+direction;
+    @Override
+    public String mapDescription() {
+        return "A " + position.toString();
     }
 
     public boolean isAt(Vector2d position) {
@@ -79,7 +82,19 @@ public class Animal implements IMapElement {
     private void positionChanged(Vector2d oldPosition) {
 
         for (IPositionChangeObserver observer : observers) {
-            observer.positionChanged(oldPosition, this);
+            Platform.runLater(() -> {
+                observer.positionChanged(oldPosition, this);
+            });
         }
+    }
+
+    @Override
+    public String getResource() {
+        return switch (this.direction) {
+            case SOUTH -> "src/main/resources/down.png";
+            case WEST -> "src/main/resources/left.png";
+            case NORTH -> "src/main/resources/up.png";
+            case EAST -> "src/main/resources/right.png";
+        };
     }
 }
