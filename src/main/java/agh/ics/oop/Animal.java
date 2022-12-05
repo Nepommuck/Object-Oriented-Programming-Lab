@@ -2,7 +2,6 @@ package agh.ics.oop;
 
 import javafx.application.Platform;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
